@@ -9,7 +9,7 @@ import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import {Customers} from './redux/customers';
+// import {Customers} from './redux/customers';
 import reducer from './redux/reducers';
 
 
