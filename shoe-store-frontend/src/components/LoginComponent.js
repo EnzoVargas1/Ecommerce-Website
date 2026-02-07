@@ -1,10 +1,11 @@
-import {Component, useState} from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
+import {Component} from 'react';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { API_ENDPOINT} from '../api/APIKey';
+import { useNavigate } from 'react-router-dom';
 
 
 const required = (val) => val && val.length;
@@ -83,13 +84,13 @@ class Login extends Component{
          if (this.state.token != null) {
 
              if (this.state.role == "[ROLE_ADMIN]") {
-                 this.props.history.push("/admin");
+                 this.props.navigate("/admin");
              } else{
-                 this.props.history.push("/user");
+                 this.props.navigate("/user");
              }
          } else {
              localStorage.clear();
-             this.props.history.push("/login");
+             this.props.navigate("/login");
              this.toggleModal();
              console.log(this.state.modal);
          }
@@ -113,7 +114,7 @@ class Login extends Component{
           <TextField id="password" label="password" margin="normal" type="password" onChange={this.handlePasswordChange}/>
           <br/>
           <div>
-          <Button variant="outlined" color="default" type="submit" size="large">Login</Button>
+          <Button variant="outlined" color="inherit" type="submit" size="large">Login</Button>
 
           <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
            <ModalHeader>Not Authorized</ModalHeader>
@@ -129,7 +130,7 @@ class Login extends Component{
           <br/>
           <h6>or</h6>
           <div className="col-sm-12">
-          <Button href="/signupform" variant="outlined" color="default" 
+          <Button href="/signupform" variant="outlined" color="inherit" 
           type="submit" size="small">Sign-Up</Button>
 
          
@@ -143,4 +144,9 @@ class Login extends Component{
 }
 
 
-export default Login;
+function LoginWithNavigate(props) {
+  const navigate = useNavigate();
+  return <Login {...props} navigate={navigate} />;
+}
+
+export default LoginWithNavigate;

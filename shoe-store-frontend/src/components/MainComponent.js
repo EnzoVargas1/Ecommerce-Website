@@ -9,16 +9,15 @@ import Login from './LoginComponent';
 import Contact from './ContactComponent';
 import Cart from './CartComponent';
 import PaymentForm from './PaymentFormComponent';
-import signUp from './SignUpComponent';
+import SignUp from './SignUpComponent';
 import User from './UserComponent';
 import Admin from './AdminComponent';
 import AddShoe from './AddShoeComponent';
 import EditProfile from './EditProfile';
 import ShippingAddress from './EditShippingInfo';
-import {BrowserRouter as Router, Switch, Route, Redirect, withRouter, Link} from 'react-router-dom';
+import {Route, Routes, Link, useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actionCreators from '../redux/Actions';
-import { act } from 'react-dom/test-utils';
 
 
 const mapStateToProps = (state) => {
@@ -60,9 +59,10 @@ class Main extends Component {
 
     render(){
 
-        const ShoeWithId = ({match}) => {
+        const ShoeWithIdWrapper = () => {
+            const params = useParams();
             return(
-              <ShoePage shoe={this.props.shoes[0].filter((shoe) => shoe.id === parseInt(match.params.shoeId,10))}
+              <ShoePage shoe={this.props.shoes[0].filter((shoe) => shoe.id === parseInt(params.shoeId,10))}
               addShoeToCart = {this.props.addShoeToCart} shoes={this.props.shoes}
               />
             );
@@ -72,25 +72,25 @@ class Main extends Component {
             <>
             <div>
                 <Header/>
-                <Switch>
-                    <Route path="/login" component={Login}/>
-                    <Route exact path="/" component={Welcome}/>
-                    <Route path="/shop" component={() => <Store shoes = {this.props.shoes} addShoeToCart = {this.props.addShoeToCart}/>}/>
-                    <Route path="/shoe/:shoeId" component={ShoeWithId}/>
-                    <Route path="/aboutus" component={AboutUs}/> 
-                    <Route path="/contactus" component={Contact}/> 
-                    <Route path="/cart" component={() => <Cart cart = {this.props.cart} 
+                <Routes>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route exact path="/" element={<Welcome/>}/>
+                    <Route path="/shop" element={<Store shoes = {this.props.shoes} addShoeToCart = {this.props.addShoeToCart}/>}/>
+                    <Route path="/shoe/:shoeId" element={<ShoeWithIdWrapper/>}/>
+                    <Route path="/aboutus" element={<AboutUs/>}/> 
+                    <Route path="/contactus" element={<Contact/>}/> 
+                    <Route path="/cart" element={<Cart cart = {this.props.cart} 
                     removeShoeFromCart={this.props.removeShoeFromCart} clearCart ={this.props.clearCart}/>}/> 
-                    <Route path="/paymentform" component={() => <PaymentForm cart ={this.props.cart} 
+                    <Route path="/paymentform" element={<PaymentForm cart ={this.props.cart} 
                     makeOrder ={this.props.makeOrder}/>}/>
-                    <Route path="/signupform" component={signUp}/>
-                    <Route path="/user" component={() => <User customer = {this.props.customer} 
-                    orders={this.props.getOrders} removeOrder={this.props.removeOrder}/> }/>
-                    <Route path="/editprofile" component={EditProfile} />
-                    <Route path="/editshipping" component={() => <ShippingAddress editShippingInfo={this.props.editShippingInfo}/>} />
-                    <Route path="/admin" component={() => <Admin/>}/>
-                    <Route path="/addshoe" component={() => <AddShoe addProductToStore={this.props.addProductToStore} />} />
-                </Switch>
+                    <Route path="/signupform" element={<SignUp/>}/>
+                    <Route path="/user" element={<User customer = {this.props.customer} 
+                    orders={this.props.getOrders} removeOrder={this.props.removeOrder}/>}/>
+                    <Route path="/editprofile" element={<EditProfile/>} />
+                    <Route path="/editshipping" element={<ShippingAddress editShippingInfo={this.props.editShippingInfo}/>} />
+                    <Route path="/admin" element={<Admin/>}/>
+                    <Route path="/addshoe" element={<AddShoe addProductToStore={this.props.addProductToStore} />} />
+                </Routes>
                 <Footer/>             
             </div>
             </>
@@ -99,4 +99,4 @@ class Main extends Component {
 
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -1,5 +1,5 @@
 import {Card, Button, Container, Row, Col, Pagination, PaginationItem} from'reactstrap';
-import {Redirect} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 import React, {useState, useEffect} from 'react';
 
 const ShoePage = (props) => {
@@ -23,7 +23,7 @@ const ShoePage = (props) => {
     var options = [];
 
     if (authorized === null) {
-        return <Redirect to="/login" />
+        return <Navigate to="/login" replace />
     }
    
      let stock = props.shoes[0];
